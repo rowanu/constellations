@@ -15,17 +15,14 @@ module.exports = function (grunt) {
           base: 'app',
           keepalive: true
         }
-      },
-      test: {
-        options: {
-          port: 9001,
-          base: 'app'
-        }
       }
     },
     karma: {
-      unit: {
-        configFile: 'config/karma.conf.js',
+      options: {
+        configFile: 'config/karma.conf.js'
+      },
+      watch: { },
+      single: {
         singleRun: true
       }
     }
@@ -35,4 +32,5 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks("grunt-karma");
 
   grunt.registerTask("default", ["connect"]);
+  grunt.registerTask("test", ["karma:single"]);
 };
