@@ -1,11 +1,13 @@
+/*jslint indent: 2 */
+/*globals angular: false */
 'use strict';
 
-/* Directives */
-
-
-angular.module('ghcApp.directives', []).
-  directive('appVersion', ['version', function(version) {
-    return function(scope, elm, attrs) {
-      elm.text(version);
+angular.module('ghcApp.directives', [])
+  // Taken from http://stackoverflow.com/questions/14995884/select-text-on-input-focus-in-angular-js
+  .directive('selectOnClick', function () {
+    return function (scope, element, attrs) {
+      element.bind('click', function () {
+        element[0].select();
+      });
     };
-  }]);
+  });
