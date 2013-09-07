@@ -6,7 +6,11 @@ var avatar404 = '/img/404_octocat.png',
   avatarLoading = '/img/spinner.gif';
 
 angular.module('ghcApp.controllers', [])
-  .controller('MainCtrl', [function ($scope) {
+  .controller('MainCtrl', ['$scope', function ($scope) {
+    $scope.$on('user:update', function (event, user) {
+      console.log("OHAI user:update");
+      console.log(user);
+    })
   }])
   .controller('UserCtrl', ['$scope', 'User', function ($scope, User) {
     $scope.submit = function () {
