@@ -3,7 +3,9 @@
 'use strict';
 
 angular.module('ghcApp.controllers', [])
-  .controller('UserCtrl', [function ($scope, User) {
+  .controller('MainCtrl', [function ($scope) {
+  }])
+  .controller('UserCtrl', ['$scope', 'User', function ($scope, User) {
     $scope.submit = function () {
       User.get({username: $scope.username}, function (user) {
         // console.log(user);
