@@ -10,11 +10,14 @@ angular.module('ghcApp.controllers', [])
   }])
   .controller('UserCtrl', ['$scope', 'User', function ($scope, User) {
     $scope.submit = function () {
+      console.log("Getting GitHub user");
       $scope.avatarUrl = avatarLoading;
       User.get({username: $scope.username}, function success(user) {
+        console.log("Found GitHub user");
         $scope.avatarUrl = user.avatar_url;
         $scope.$emit('user:update', user);
       }, function error(response) {
+        console.log("No GitHub user found");
         $scope.avatarUrl = avatar404;
       });
     };
