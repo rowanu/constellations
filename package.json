@@ -1,5 +1,5 @@
 {
-  "name": "GitHubConstellations",
+  "name": "Constellations",
   "description": "Look at all the stars...",
   "devDependencies": {
     "phantomjs": "*",
