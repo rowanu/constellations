@@ -3,7 +3,7 @@
 /* jasmine specs for services go here */
 
 describe('service', function() {
-  beforeEach(module('ghcApp.services'));
+  beforeEach(module('constellationsApp.services'));
 
 
   describe('version', function() {

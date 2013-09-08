@@ -2,7 +2,7 @@
 /*globals angular: false */
 'use strict';
 
-angular.module('ghcApp.controllers', [])
+angular.module('constellationsApp.controllers', [])
   .controller('MainCtrl', ['$scope', function ($scope) {
     $scope.username = 'rowanu'; // TODO: Testing
     $scope.$broadcast("username", $scope.username);

@@ -3,7 +3,7 @@
 /* jasmine specs for filters go here */
 
 describe('filter', function() {
-  beforeEach(module('ghcApp.filters'));
+  beforeEach(module('constellationsApp.filters'));
 
 
   describe('interpolate', function() {

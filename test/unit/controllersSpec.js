@@ -7,7 +7,7 @@ describe('controllers', function(){
     avatar_url: 'http://rowanu/avatar_url'
   };
 
-  beforeEach(module('ghcApp.controllers', 'ghcApp.services'));
+  beforeEach(module('constellationsApp.controllers', 'constellationsApp.services'));
 
   describe('UserCtrl', function () {
     beforeEach(inject(function (_$httpBackend_, $rootScope, $controller) {

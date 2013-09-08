@@ -5,7 +5,7 @@
 var avatar404 = '/img/404_octocat.png',
   avatarLoading = '/img/spinner.gif';
 
-angular.module('ghcApp.services', ['ngResource'])
+angular.module('constellationsApp.services', ['ngResource'])
   .factory('Constellation', function (GitHub) {
     return {
       getUser: function (username) {
