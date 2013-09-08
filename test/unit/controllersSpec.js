@@ -1,12 +1,10 @@
 'use strict';
 
-/* jasmine specs for controllers go here */
-
 describe('controllers', function(){
   var scope, UserCtrl, $httpBackend;
   var user = {
     login: 'rowanu',
-    avatar_url: 'OHAI'
+    avatar_url: 'http://rowanu/avatar_url'
   };
 
   beforeEach(module('ghcApp.controllers', 'ghcApp.services'));
@@ -20,12 +18,7 @@ describe('controllers', function(){
         .respond(user);
     }));
 
-    it('should emit an update on update', inject(function() {
-      spyOn(scope, '$emit');
-      scope.username = 'rowanu';
-      scope.submit();
-      $httpBackend.flush();
-      expect(scope.$emit).toHaveBeenCalled();
+    it('', inject(function() {
     }));
   })
 });
