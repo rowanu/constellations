@@ -10,21 +10,41 @@ angular.module('ghcApp.services', ['ngResource'])
     return {
       getUser: function (username) {
         var self = this;
-        console.log("Getting GitHub user");
+        console.log(username + ": Getting GitHub user");
         self.user = {avatar_url: avatarLoading};
         GitHub.user.get({username: username}, function success(user) {
-          console.log("Found GitHub user " + user.login);
+          console.log(username + ": Found GitHub user");
           self.user = user;
         }, function error(response) {
-          console.log("No GitHub user found");
+          console.log(username + ": No GitHub user found");
           self.user = {avatar_url: avatar404};
         });
       },
+      getFollowing: function (username) {
+        var self = this;
+        console.log(username + ": Getting GitHub following");
+        GitHub.following.get({username: username}, function success(following) {
+          console.log(username + ": Found Github following");
+          angular.forEach(following, function (f) {
+            console.log(f.login + ': ' + f.html_url);
+          });
+        }, function error(response) {
+          console.log(username + ": No Github following found");
+        });
+      },
       user: {}
-    }
+    };
   })
   .factory('GitHub', function ($resource) {
     return {
-      user: $resource('https://api.github.com/users/:username')
+      user: $resource('https://api.github.com/users/:username'),
+      following: $resource('https://api.github.com/users/:username/following',
+        {},
+        {
+          'get': {
+            method: 'GET',
+            isArray: true
+          }
+        })
     };
   });
