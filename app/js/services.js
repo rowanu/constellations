@@ -11,13 +11,13 @@ angular.module('ghcApp.services', ['ngResource'])
       getUser: function (username) {
         var self = this;
         console.log(username + ": Getting GitHub user");
-        self.user = {avatar_url: avatarLoading};
+        self.user = {avatar_url: avatarLoading, html_url: ''};
         GitHub.user.get({username: username}, function success(user) {
           console.log(username + ": Found GitHub user");
           self.user = user;
         }, function error(response) {
           console.log(username + ": No GitHub user found");
-          self.user = {avatar_url: avatar404};
+          self.user = {avatar_url: avatar404, html_url: ''};
         });
       },
       getFollowing: function (username) {

@@ -7,9 +7,11 @@ angular.module('ghcApp.controllers', [])
   }])
   .controller('UserCtrl', ['$scope', 'Constellation', function ($scope, Constellation) {
     $scope.$watch(function () { return Constellation.user; }, function (newValue) {
-      if (newValue && newValue.login) {
+      if (newValue) {
         $scope.user = newValue;
-        Constellation.getFollowing(newValue.login);
+        if (newValue.login) {
+          Constellation.getFollowing(newValue.login);
+        }
       }
     });
     $scope.submit = function () {
