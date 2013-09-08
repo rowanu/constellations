@@ -16,6 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular-latest": "~1.1.5"
+    "angular": "~1.0.8",
+    "angular-resource": "~1.0.8"
   }
 }
