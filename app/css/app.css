@@ -1,12 +1,12 @@
 .username {
-  width: 100%;
+  float: left;
 }
 
-.username img {
+.user img {
   float: right;
 }
 
-.username .avatar_url {
+.user .avatar_url {
   height: 120px;
   width: 120px;
 }
