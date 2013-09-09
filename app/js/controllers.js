@@ -3,15 +3,24 @@
 'use strict';
 
 angular.module('constellationsApp.controllers', [])
-  .controller('MainCtrl', ['$scope', function ($scope) {
-    $scope.username = 'rowanu'; // TODO: Testing
-    $scope.$broadcast("username", $scope.username);
+  .controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
+    $scope.$on('username:submit', function (e, username) {
+      $scope.$broadcast('username', username);
+    });
   }])
-  .controller('UserCtrl', ['$scope', function ($scope) {
+  .controller('UserCtrl', ['$scope', 'GitHub', function ($scope, GitHub) {
+    $scope.$on("username", function (e, username) {
+      GitHub.user.get({username: username}, function success(user) {
+        console.log(user); // TODO: Testing
+        $scope.user = user;
+      }, function error() {
+        console.log(username + ": GitHub user not found.");
+      });
+    });
   }])
   .controller('UsernameCtrl', ['$scope', function ($scope) {
     $scope.submit = function () {
-      console.log($scope.username);
-      // TODO: $scope.$emit("username")
+      console.log($scope.username + ": Username updated");
+      $scope.$emit('username:submit', $scope.username);
     };
   }]);

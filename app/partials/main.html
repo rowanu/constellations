@@ -1,2 +1,12 @@
-<ng-include src="'partials/username.html'"></ng-include>
-<ng-include src="'partials/user.html'"></ng-include>
+<div ng-controller="UsernameCtrl" class="username">
+  <form ng-submit="submit()">
+    <input ng-model="username" type="text" placeholder="GitHub username"
+    select-on-click>
+    <input type="submit" ng-disabled="!username.length" ng-hide="true">
+  </form>
+</div>
+<div ng-controller="UserCtrl" class="user">
+  <a ng-href="{{user.html_url}}" target="_blank">
+    <img ng-src="{{user.avatar_url}}" class="avatar_url">
+  </a>
+</div>
