@@ -12,6 +12,12 @@
   </form>
 </div>
 
+<div ng-controller="StarredCtrl" class="starred">
+  <ul>
+    <li ng-repeat="star in starred">{{star.full_name}}</li>
+  </ul>
+</div>
+
 <div ng-controller="FollowingCtrl" class="following">
   <ul>
     <li ng-repeat="follower in following">{{follower.login}}</li>

@@ -35,6 +35,17 @@ angular.module('constellationsApp.controllers', [])
       });
     });
   }])
+  .controller('StarredCtrl', ['$scope', 'GitHub', function ($scope, GitHub) {
+    $scope.$on("username", function (e, username) {
+      GitHub.starred.get({username: username}, function success(starred) {
+        console.log(username + ": Got GitHub starred");
+        $scope.starred = starred;
+      }, function error() {
+        console.error(username + ": GitHub starred not found");
+        $scope.starred = [];
+      });
+    });
+  }])
   .controller('UsernameCtrl', ['$scope', function ($scope) {
     $scope.submit = function () {
       console.log($scope.username + ": Username updated");
