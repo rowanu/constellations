@@ -16,7 +16,6 @@ angular.module('constellationsApp.controllers', [])
       $scope.user = {avatar_url: avatarLoading, html_url: '/'};
       GitHub.user.get({username: username}, function success(user) {
         console.log(username + ": Got GitHub user");
-        console.log(user); // TODO: Testing
         $scope.user = user;
       }, function error() {
         console.error(username + ": GitHub user not found");
@@ -37,6 +36,7 @@ angular.module('constellationsApp.controllers', [])
   }])
   .controller('StarredCtrl', ['$scope', 'GitHub', function ($scope, GitHub) {
     $scope.$on("username", function (e, username) {
+      // TODO: Use per_page=100 and page=1 to get all results
       GitHub.starred.get({username: username}, function success(starred) {
         console.log(username + ": Got GitHub starred");
         $scope.starred = starred;
