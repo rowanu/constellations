@@ -50,5 +50,5 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks("grunt-karma");
 
   grunt.registerTask("default", ["connect:livereload", "watch"]);
-  grunt.registerTask("test", ["karma:single"]);
+  grunt.registerTask("test", ["karma:watch"]);
 };
