@@ -36,7 +36,6 @@ angular.module('constellationsApp.controllers', [])
   }])
   .controller('StarredCtrl', ['$scope', 'GitHub', function ($scope, GitHub) {
     $scope.$on("username", function (e, username) {
-      // TODO: Use per_page=100 and page=1 to get all results
       GitHub.starred.get({username: username}, function success(starred) {
         console.log(username + ": Got GitHub starred");
         $scope.starred = starred;
