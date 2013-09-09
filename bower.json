@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "angular": "~1.0.8",
-    "angular-resource": "~1.0.8"
+    "angular-resource": "~1.0.8",
+    "d3": "~3.3.3"
   }
 }
