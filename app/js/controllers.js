@@ -19,8 +19,19 @@ angular.module('constellationsApp.controllers', [])
         console.log(user); // TODO: Testing
         $scope.user = user;
       }, function error() {
-        console.log(username + ": GitHub user not found");
+        console.error(username + ": GitHub user not found");
         $scope.user = {avatar_url: avatar404, html_url: '/'};
+      });
+    });
+  }])
+  .controller('FollowingCtrl', ['$scope', 'GitHub', function ($scope, GitHub) {
+    $scope.$on("username", function (e, username) {
+      GitHub.following.get({username: username}, function success(following) {
+        console.log(username + ": Got GitHub following");
+        $scope.following = following;
+      }, function error() {
+        console.error(username + ": GitHub following not found");
+        $scope.following = [];
       });
     });
   }])

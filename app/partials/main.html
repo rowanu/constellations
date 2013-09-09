@@ -1,3 +1,9 @@
+<div ng-controller="UserCtrl" class="user">
+  <a ng-href="{{user.html_url}}" target="_blank">
+    <img ng-src="{{user.avatar_url}}" class="avatar_url">
+  </a>
+</div>
+
 <div ng-controller="UsernameCtrl" class="username">
   <form ng-submit="submit()">
     <input ng-model="username" type="text" placeholder="GitHub username"
@@ -5,8 +11,9 @@
     <input type="submit" ng-disabled="!username.length" ng-hide="true">
   </form>
 </div>
-<div ng-controller="UserCtrl" class="user">
-  <a ng-href="{{user.html_url}}" target="_blank">
-    <img ng-src="{{user.avatar_url}}" class="avatar_url">
-  </a>
+
+<div ng-controller="FollowingCtrl" class="following">
+  <ul>
+    <li ng-repeat="follower in following">{{follower.login}}</li>
+  </ul>
 </div>
