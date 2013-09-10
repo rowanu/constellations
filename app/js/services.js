@@ -5,9 +5,21 @@
 var PER_PAGE = 100;
 
 angular.module('constellationsApp.services', ['ngResource'])
-  .factory('Constellation', ['GitHub', function (GitHub) {
+  .factory('Constellation', ['GitHub', '$q', function (GitHub, $q) {
     return {
       following: [],
+      getFollowing: function (username) {
+        var deferred = $q.defer();
+        GitHub.following.get({username: username}, function success(following) {
+          console.log(username + ": Got GitHub following");
+          this.following = following;
+          deferred.resolve(following);
+        }, function error(err) {
+          console.error(username + ": GitHub following not found");
+          deferred.reject(err);
+        });
+        return deferred.promise;
+      },
       getAllStarred: function (username, successCallback, errorCallback) {
         var allStarred = [],
           page = 1, // GitHub API paging is 1-based.

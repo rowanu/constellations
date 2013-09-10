@@ -12,6 +12,8 @@
   </form>
 </div>
 
-<div ng-controller="FollowingCtrl" class=following>
-  <night-sky data="following"></night-sky>
-</div>
+<ul>
+  <li ng-repeat="follower in following">{{follower.login}}</li>
+</ul>
+
+<night-sky data="following"></night-sky>

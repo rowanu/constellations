@@ -9,7 +9,9 @@ angular.module('constellationsApp.controllers', [])
   .controller('MainCtrl', ['$scope', 'Constellation', function ($scope, Constellation) {
     // Share the username with child controllers.
     $scope.$on('username:submit', function (e, username) {
-      $scope.$broadcast('username:update', username);
+      // $scope.$broadcast('username:update', username);
+      $scope.following = Constellation.getFollowing(username);
+      console.log($scope.following);
     });
   }])
   .controller('UserCtrl', ['$scope', 'GitHub', function ($scope, GitHub) {
@@ -26,13 +28,6 @@ angular.module('constellationsApp.controllers', [])
   }])
   .controller('FollowingCtrl', ['$scope', 'GitHub', function ($scope, GitHub) {
     $scope.$on("username:update", function (e, username) {
-      GitHub.following.get({username: username}, function success(following) {
-        console.log(username + ": Got GitHub following");
-        $scope.following = following;
-      }, function error() {
-        console.error(username + ": GitHub following not found");
-        // $scope.following = [];
-      });
     });
   }])
   .controller('StarredCtrl', ['$scope', 'GitHub', function ($scope, GitHub) {
