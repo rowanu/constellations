@@ -6,18 +6,8 @@ var PER_PAGE = 100;
 
 angular.module('constellationsApp.services', ['ngResource'])
   .factory('Constellation', ['GitHub', function (GitHub) {
-    var getStarred;
-
-    getStarred = function (starred) {
-      if (starred.length < PER_PAGE) {
-        // Must be last page
-        console.log("NUF");
-      } else {
-        console.log("MOAR");
-      }
-    };
-
     return {
+      following: [],
       getAllStarred: function (username, successCallback, errorCallback) {
         var allStarred = [],
           page = 1, // GitHub API paging is 1-based.
