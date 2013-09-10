@@ -1,6 +1,5 @@
-/* .username { */
-/*   float: left; */
-/* } */
+.username {
+}
 
 .user img {
   float: right;
@@ -11,3 +10,7 @@
   width: 120px;
 }
 
+.chart {
+  left: auto;
+  right: auto;
+}

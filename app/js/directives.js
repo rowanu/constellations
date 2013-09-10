@@ -5,8 +5,8 @@
 angular.module('constellationsApp.directives', [])
   .directive('nightSky', function () {
     var margin = 20,
-      height = 1000,
-      width = 1000;
+      width = 960,
+      height = 500;
 
     return {
       restrict: 'E',
@@ -14,16 +14,37 @@ angular.module('constellationsApp.directives', [])
         data: '='
       },
       link: function linkSky(scope, element, attrs) {
-        var chart = d3.select(element[0])
-          .append('svg')
+        var chart = d3.select(element[0]).append('svg')
+          .attr('class', 'chart')
           .attr('width', width)
-          .attr('heigh', height);
+          .attr('height', height);
 
         scope.$watch('data', function (newValue, oldValue) {
-          if (newValue) {
-            console.log('watch')
-            console.log(newValue);
-          }
+          if (!newValue) { return; }
+
+          var node = chart.selectAll('circle.node')
+            .data(newValue)
+            .enter().append('circle')
+            .attr('class', 'node')
+            .attr('r', 12);
+
+          // var force = d3.layout.force()
+          //   .gravity(0.5)
+          //   .distance(100)
+          //   .charge(-100)
+          //   .nodes(newValue)
+          //   // .links(newValue)
+          //   .size([width, height])
+          //   .start();
+
+          // force.on('tick', function() {
+          //   link.attr('x1', function(d) { return d.source.x; })
+          //       .attr('y1', function(d) { return d.source.y; })
+          //       .attr('x2', function(d) { return d.target.x; })
+          //       .attr('y2', function(d) { return d.target.y; });
+
+          //   node.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
+          // });
         });
       }
     };
