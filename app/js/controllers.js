@@ -4,23 +4,25 @@
 
 angular.module('constellationsApp.controllers', [])
   .controller('MainCtrl', ['$scope', '$q', 'Constellation', '$http', function ($scope, $q, Constellation, $http) {
-    // TODO: Clean up var definitions
-    var ready;
-    var followingStarred = [];
     var username = 'rowanu';
     var nodes = [], links = [];
+    var deferd = $q.defer();
 
     // TODO: Start on username update.
     // $scope.$on('username:submit', function (e, username) {
     //   $scope.user = Constellation.getUser(username);
+    //   $scope.following = Constellation.getFollowing(username);
     // });
 
     $scope.user = Constellation.getUser(username);
-    Constellation.getFollowing(username).then(function (following) {
-      console.log(following);
+    $scope.following = Constellation.getFollowing(username);
+    $scope.following.then(function (following) {
+      angular.forEach(following, function(user) {
+        console.log(username + ": Follows " + user.login + ": Getting starred");
+        Constellation.getStarred(user.login);
+      });
     });
 
-    // $scope.following = following;
     // // TODO: This could be replaced with _.pluck
     // angular.forEach(following, function (f) {
     //   followingStarred.push(Constellation.getStarred(f.login));

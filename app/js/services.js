@@ -5,9 +5,10 @@
 var PER_PAGE = 100;
 var AVATAR_404 = '/img/404_octocat.png';
 
+// TODO: All these calls (check localStorage, hit API, etc) can be refactored.
 // TODO: Remove resolve([]) - this should be left up to the client.
 angular.module('constellationsApp.services', ['ngResource', 'ngStorage'])
-  .factory('Constellation', ['GitHub', '$localStorage', '$q', function (GitHub, $localStorage, $q) {
+  .factory('Constellation', ['GitHub', '$localStorage', '$q', '$http', function (GitHub, $localStorage, $q, $http) {
     return {
       following: [],
       getFollowing: function (username) {
@@ -21,9 +22,15 @@ angular.module('constellationsApp.services', ['ngResource', 'ngStorage'])
             // Store for later
             $localStorage.following = following;
             deferred.resolve(following);
-          }, function error(reason) {
+          }, function error(response) {
             console.error(username + ': GitHub following not found');
-            deferred.reject(reason);
+            // TODO: Move rate limit info to shared location.
+            if (response.status === 403) {
+              $http.get('https://api.github.com/rate_limit').success(function(r) {
+                console.log(username + ": Rate limit resets at " + new Date(r.rate.reset * 1000));
+                deferred.reject(response);
+              });
+            }
           });
         }
         return deferred.promise;
@@ -47,13 +54,20 @@ angular.module('constellationsApp.services', ['ngResource', 'ngStorage'])
       },
       getStarred: function (username) {
         var deferred = $q.defer();
-        GitHub.starred.get({username: username}, function success(starred) {
-          console.log(username + ': Got GitHub starred ' + starred.length);
-          deferred.resolve(starred);
-        }, function error() {
-          console.error(username + ': GitHub starred not found');
-          deferred.resolve([]);
-        });
+        $localStorage.starred = $localStorage.starred || {};
+        if ($localStorage.starred.hasOwnProperty(username)) {
+          console.log(username + ": Found local starred");
+          deferred.resolve($localStorage.starred[username]);
+        } else {
+          GitHub.starred.get({username: username}, function success(starred) {
+            console.log(username + ': Got GitHub starred ' + starred.length);
+            $localStorage.starred[username] = starred;
+            deferred.resolve(starred);
+          }, function error(response) {
+            console.error(username + ': GitHub starred not found');
+            deferred.resolve();
+          });
+        }
         return deferred.promise;
       },
       // TODO: Work for all types eg. following.
@@ -89,9 +103,10 @@ angular.module('constellationsApp.services', ['ngResource', 'ngStorage'])
   .factory('GitHub', function ($resource) {
     return {
       user: $resource('https://api.github.com/users/:username'),
+      // TODO: Use PER_PAGE
       following: $resource('https://api.github.com/users/:username/following',
-        {per_page: PER_PAGE}, { 'get': { method: 'GET', isArray: true } }),
+        {per_page: 10}, { 'get': { method: 'GET', cache: true, isArray: true } }),
       starred: $resource('https://api.github.com/users/:username/starred',
-        {per_page: PER_PAGE}, { 'get': { method: 'GET', isArray: true } })
+        {per_page: 50}, { 'get': { method: 'GET', cache: true, isArray: true } })
     };
   });
