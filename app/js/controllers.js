@@ -5,21 +5,20 @@
 angular.module('constellationsApp.controllers', [])
   .controller('MainCtrl', ['$scope', '$q', 'Constellation', '$http', function ($scope, $q, Constellation, $http) {
     // TODO: Clean up var definitions
-    var following, ready;
+    var ready;
     var followingStarred = [];
     var username = 'rowanu';
     var nodes = [], links = [];
 
-    // TODO: Enable
+    // TODO: Start on username update.
     // $scope.$on('username:submit', function (e, username) {
     //   $scope.user = Constellation.getUser(username);
     // });
 
-    // Constellation.getFollowing(username).then(function (following) {
-    // TODO: Get following's starred
-    // });
+    Constellation.getFollowing(username).then(function (following) {
+      console.log(following);
+    });
 
-    // following = [{login: 'rowanu'}, {login: 'hownowstephen'}]; // TODO: Testing
     // $scope.following = following;
     // // TODO: This could be replaced with _.pluck
     // angular.forEach(following, function (f) {
@@ -45,10 +44,6 @@ angular.module('constellationsApp.controllers', [])
     //     links: links
     //   };
     //   console.log(JSON.stringify($scope.data));
-
-    $http.get('/dataz.json').then(function success(response) {
-      $scope.constellation = response.data;
-    });
 
     // }, function error(reason) {
     //   console.error(username + ": Not ready " + reason);

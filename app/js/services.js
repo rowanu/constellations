@@ -5,23 +5,30 @@
 var PER_PAGE = 100;
 var AVATAR_404 = '/img/404_octocat.png';
 
-// TODO: Store/cache in localStorage?
 // TODO: Remove resolve([]) - this should be left up to the client.
-angular.module('constellationsApp.services', ['ngResource'])
-  .factory('Constellation', ['GitHub', '$q', function (GitHub, $q) {
+angular.module('constellationsApp.services', ['ngResource', 'ngStorage'])
+  .factory('Constellation', ['GitHub', '$localStorage', '$q', function (GitHub, $localStorage, $q) {
     return {
       following: [],
       getFollowing: function (username) {
         var deferred = $q.defer();
-        GitHub.following.get({username: username}, function success(following) {
-          console.log(username + ': Got GitHub following ' + following.length);
-          // TODO: Store following for later reference?
-          // this.following = following;
-          deferred.resolve(following);
-        }, function error(reason) {
-          console.error(username + ': GitHub following not found');
-          deferred.reject(reason);
-        });
+
+        if ($localStorage.following && $localStorage.following.length > 0) {
+          // Return localStorage copy of following.
+          console.log(username + ": Found local following");
+          deferred.resolve($localStorage.following);
+        } else {
+          // Get from GitHub.
+          GitHub.following.get({username: username}, function success(following) {
+            console.log(username + ': Got GitHub following ' + following.length);
+            // Store for later
+            $localStorage.following = following;
+            deferred.resolve(following);
+          }, function error(reason) {
+            console.error(username + ': GitHub following not found');
+            deferred.reject(reason);
+          });
+        }
         return deferred.promise;
       },
       getUser: function (username) {

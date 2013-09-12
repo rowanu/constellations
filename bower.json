@@ -19,6 +19,7 @@
     "angular": "~1.2.0",
     "angular-resource": "~1.2.0",
     "d3": "~3.3.3",
-    "angular-route": "~1.2.0-rc.2"
+    "angular-route": "~1.2.0-rc.2",
+    "ngstorage": "~0.2.3"
   }
 }
