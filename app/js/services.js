@@ -5,6 +5,8 @@
 var PER_PAGE = 100;
 var AVATAR_404 = '/img/404_octocat.png';
 
+// TODO: Store/cache in localStorage?
+// TODO: Remove resolve([]) - this should be left up to the client.
 angular.module('constellationsApp.services', ['ngResource'])
   .factory('Constellation', ['GitHub', '$q', function (GitHub, $q) {
     return {
@@ -44,7 +46,7 @@ angular.module('constellationsApp.services', ['ngResource'])
         });
         return deferred.promise;
       },
-      // TODO: Work for all types eg. starred.
+      // TODO: Work for all types eg. following.
       getAllStarred: function (username, successCallback, errorCallback) {
         var allStarred = [],
           page = 1, // GitHub API paging is 1-based.
