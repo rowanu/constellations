@@ -15,6 +15,7 @@ angular.module('constellationsApp.controllers', [])
     //   $scope.user = Constellation.getUser(username);
     // });
 
+    $scope.user = Constellation.getUser(username);
     Constellation.getFollowing(username).then(function (following) {
       console.log(following);
     });

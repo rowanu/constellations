@@ -12,13 +12,10 @@ angular.module('constellationsApp.services', ['ngResource', 'ngStorage'])
       following: [],
       getFollowing: function (username) {
         var deferred = $q.defer();
-
         if ($localStorage.following && $localStorage.following.length > 0) {
-          // Return localStorage copy of following.
           console.log(username + ": Found local following");
           deferred.resolve($localStorage.following);
         } else {
-          // Get from GitHub.
           GitHub.following.get({username: username}, function success(following) {
             console.log(username + ': Got GitHub following ' + following.length);
             // Store for later
@@ -33,13 +30,19 @@ angular.module('constellationsApp.services', ['ngResource', 'ngStorage'])
       },
       getUser: function (username) {
         var deferred = $q.defer();
-        GitHub.user.get({username: username}, function success(user) {
-          console.log(username + ': Got GitHub user');
-          deferred.resolve(user);
-        }, function error(reason) {
-          console.error(username + ': GitHub user not found');
-          deferred.resolve({avatar_url: AVATAR_404, html_url: '/'});
-        });
+        if ($localStorage.user) {
+          console.log(username + ": Found local user");
+          deferred.resolve($localStorage.user);
+        } else {
+          GitHub.user.get({username: username}, function success(user) {
+            console.log(username + ': Got GitHub user');
+            $localStorage.user = user;
+            deferred.resolve(user);
+          }, function error(reason) {
+            console.error(username + ': GitHub user not found');
+            deferred.resolve({avatar_url: AVATAR_404, html_url: '/'});
+          });
+        }
         return deferred.promise;
       },
       getStarred: function (username) {
