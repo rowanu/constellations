@@ -4,9 +4,12 @@
 
 angular.module('constellationsApp.controllers', [])
   .controller('MainCtrl', ['$scope', '$q', 'Constellation', '$http', function ($scope, $q, Constellation, $http) {
-    var username = 'rowanu';
-    var nodes = [], links = [];
+    var data = {
+      nodes: [],
+      links: []
+    };
     var all = $q.all;
+    var username = 'rowanu'; // TODO: Testing
     var starreds = [], logins = [];
 
     // $scope.$on('username:submit', function (e, username) {
@@ -23,13 +26,19 @@ angular.module('constellationsApp.controllers', [])
 
       all(starreds).then(function (results) {
         angular.forEach(results, function (starred, i) {
+          data.nodes.push({name: logins[i], type: 'user'});
+          var userIndex = data.nodes.length - 1;
           angular.forEach(starred, function (repo, j) {
+            // Convert to nodes and links
             console.log(logins[i] + " starred " + repo.full_name);
-            // TODO: Convert to nodes and links
+            data.nodes.push({name: repo.full_name, type: 'repo'});
+            data.links.push({source: userIndex, target: data.nodes.length - 1});
             // TODO: Remove duplicate repo references
             // TODO: Only show repos with > 1 starred
           });
         });
+        console.log(data);
+        $scope.constellation = data;
       });
     });
   }])
