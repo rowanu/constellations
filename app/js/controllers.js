@@ -6,12 +6,10 @@ angular.module('constellationsApp.controllers', [])
   .controller('MainCtrl', ['$scope', '$q', 'Constellation', '$http', function ($scope, $q, Constellation, $http) {
     var username = 'rowanu';
     var nodes = [], links = [];
-    var deferd = $q.defer();
+    var all = $q.all;
+    var starreds = [], logins = [];
 
-    // TODO: Start on username update.
     // $scope.$on('username:submit', function (e, username) {
-    //   $scope.user = Constellation.getUser(username);
-    //   $scope.following = Constellation.getFollowing(username);
     // });
 
     $scope.user = Constellation.getUser(username);
@@ -19,42 +17,21 @@ angular.module('constellationsApp.controllers', [])
     $scope.following.then(function (following) {
       angular.forEach(following, function(user) {
         console.log(username + ": Follows " + user.login + ": Getting starred");
-        Constellation.getStarred(user.login);
+        logins.push(user.login);
+        starreds.push(Constellation.getStarred(user.login));
+      });
+
+      all(starreds).then(function (results) {
+        angular.forEach(results, function (starred, i) {
+          angular.forEach(starred, function (repo, j) {
+            console.log(logins[i] + " starred " + repo.full_name);
+            // TODO: Convert to nodes and links
+            // TODO: Remove duplicate repo references
+            // TODO: Only show repos with > 1 starred
+          });
+        });
       });
     });
-
-    // // TODO: This could be replaced with _.pluck
-    // angular.forEach(following, function (f) {
-    //   followingStarred.push(Constellation.getStarred(f.login));
-    //   nodes.push({name: f.login});
-    // });
-    // ready = $q.all(followingStarred);
-    // ready.then(function success(results) {
-    //   console.log("Finished getting ALL following starred");
-    //   angular.forEach(results, function (starred, i) {
-    //     console.log(i + nodes[i]);
-    //     // Users are at the front of the nodes array.
-    //     angular.forEach(starred, function (repo) {
-    //       // TODO: Count. Only display repos with > 1 star.
-    //       // TODO: Stop duplicates of repos
-    //       // Record link
-    //       nodes.push({name: repo.full_name});
-    //       links.push({source: i, target: nodes.length - 1});
-    //     });
-    //   });
-    //   $scope.data = {
-    //     nodes: nodes,
-    //     links: links
-    //   };
-    //   console.log(JSON.stringify($scope.data));
-
-    // }, function error(reason) {
-    //   console.error(username + ": Not ready " + reason);
-    //   $scope.following = [];
-    // });
-
-    // });
-
   }])
   .controller('UsernameCtrl', ['$scope', function ($scope) {
     $scope.submit = function () {
