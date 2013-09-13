@@ -12,6 +12,8 @@ angular.module('constellationsApp.controllers', [])
     var username = 'rowanu'; // TODO: Testing
     var starreds = [], logins = [];
 
+    var repos = {}, usernames = {};
+
     // $scope.$on('username:submit', function (e, username) {
     // });
 
@@ -25,18 +27,45 @@ angular.module('constellationsApp.controllers', [])
       });
 
       all(starreds).then(function (results) {
+        // Count starred repos.
         angular.forEach(results, function (starred, i) {
-          data.nodes.push({name: logins[i], type: 'user'});
-          var userIndex = data.nodes.length - 1;
           angular.forEach(starred, function (repo, j) {
-            // Convert to nodes and links
-            console.log(logins[i] + " starred " + repo.full_name);
-            data.nodes.push({name: repo.full_name, type: 'repo'});
-            data.links.push({source: userIndex, target: data.nodes.length - 1});
-            // TODO: Remove duplicate repo references
-            // TODO: Only show repos with > 1 starred
+            if (repos.hasOwnProperty(repo.full_name)) {
+              repos[repo.full_name].push(logins[i]);
+            } else {
+              // Start the record
+              repos[repo.full_name] = [logins[i]];
+            }
           });
         });
+        // Clean up starred repos.
+        angular.forEach(repos, function (users, repoName) {
+          // Only show repos with > 1 starred
+          if (users.length > 1) {
+            console.log(repoName + " has more than 1 star #" + users.length);
+            // Add the repo to nodes
+            data.nodes.push({name: repoName, type: 'repo'});
+            var repoIndex = data.nodes.length - 1;
+            // Only push users not present
+            angular.forEach(users, function (user) {
+              var userIndex = -1;
+              angular.forEach(data.nodes, function (node, i) {
+                if (node.name === user) {
+                  userIndex = i;
+                  return;
+                }
+              });
+              if (userIndex < 0) {
+                data.nodes.push({name: user, type: 'user'});
+                userIndex = data.nodes.length - 1;
+              }
+              data.links.push({source: userIndex, target: repoIndex});
+            });
+          }
+        });
+
+        // Convert to nodes and links
+        // Add the users to nodes (if do not exist)
         console.log(data);
         $scope.constellation = data;
       });

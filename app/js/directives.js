@@ -15,13 +15,13 @@ angular.module('constellationsApp.directives', [])
       },
       link: function linkSky(scope, element, attrs) {
         var svg = d3.select(element[0]).append('svg')
-          // .attr('class', 'chart')
+          .attr('class', 'chart')
           .attr('width', width)
           .attr('height', height);
 
         var force = d3.layout.force()
-          // .gravity(0.2)
-          // .distance(20)
+          .gravity(0.1)
+          .distance(60)
           .charge(-100)
           .size([width, height]);
 
@@ -39,14 +39,24 @@ angular.module('constellationsApp.directives', [])
             .enter().append("line")
             .attr("class", "link");
 
-          var node = svg.selectAll('circle.node')
+          var node = svg.selectAll('.node')
             .data(newValue.nodes)
-            .enter().append('circle')
+            .enter().append('g')
             .attr('class', 'node')
             .attr('r', 4)
             .call(force.drag);
           
-          node.append("text")
+          // TODO: Append image based on type.
+          node.append("image")
+            .attr("xlink:href", "https://github.com/favicon.ico")
+            .attr("x", -8)
+            .attr("y", -8)
+            .attr("width", 16)
+            .attr("height", 16);
+
+          node.append("svg:text")
+            // .attr("dx", 12)
+            // .attr("dy", ".35em")
             .text(function (d) { return d.name; });
 
           force.on('tick', function() {
