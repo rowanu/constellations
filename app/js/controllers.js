@@ -13,6 +13,7 @@ angular.module('constellationsApp.controllers', [])
     var starreds = [], logins = [];
 
     var repos = {}, usernames = {};
+    var repoDetails = {};
 
     // $scope.$on('username:submit', function (e, username) {
     // });
@@ -23,6 +24,7 @@ angular.module('constellationsApp.controllers', [])
       angular.forEach(following, function(user) {
         console.log(username + ": Follows " + user.login + ": Getting starred");
         logins.push(user.login);
+        usernames[user.login] = user;
         starreds.push(Constellation.getStarred(user.login));
       });
 
@@ -30,6 +32,7 @@ angular.module('constellationsApp.controllers', [])
         // Count starred repos.
         angular.forEach(results, function (starred, i) {
           angular.forEach(starred, function (repo, j) {
+            repoDetails[repo.full_name] = repo;
             if (repos.hasOwnProperty(repo.full_name)) {
               repos[repo.full_name].push(logins[i]);
             } else {
@@ -44,7 +47,7 @@ angular.module('constellationsApp.controllers', [])
           if (users.length > 1) {
             console.log(repoName + " has more than 1 star #" + users.length);
             // Add the repo to nodes
-            data.nodes.push({name: repoName, type: 'repo'});
+            data.nodes.push({name: repoName, type: 'repo', html_url: repoDetails[repoName].html_url});
             var repoIndex = data.nodes.length - 1;
             // Only push users not present
             angular.forEach(users, function (user) {
@@ -52,11 +55,10 @@ angular.module('constellationsApp.controllers', [])
               angular.forEach(data.nodes, function (node, i) {
                 if (node.name === user) {
                   userIndex = i;
-                  return;
                 }
               });
               if (userIndex < 0) {
-                data.nodes.push({name: user, type: 'user'});
+                data.nodes.push({name: user, type: 'user', avatar_url: usernames[user].avatar_url, html_url: usernames[user].html_url});
                 userIndex = data.nodes.length - 1;
               }
               data.links.push({source: userIndex, target: repoIndex});

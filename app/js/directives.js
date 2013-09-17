@@ -1,4 +1,4 @@
-/*jslint indent: 2 */
+/*jslint indent: 2, browser: true */
 /*globals angular: false, d3: false */
 'use strict';
 
@@ -23,9 +23,6 @@ angular.module('constellationsApp.directives', [])
           .gravity(0.05)
           .distance(100)
           .charge(-400)
-          // .charge(function (d, i) {
-          //   return (d.type === 'repo') ? -300 : -100;
-          // })
           .size([width, height]);
 
         scope.$watch('data', function (newValue, oldValue) {
@@ -54,6 +51,8 @@ angular.module('constellationsApp.directives', [])
               var image = 'https://github.com/favicon.ico'; 
               if (d.type === 'repo') {
                 image = '/img/star.png';
+              } else if (d.type === 'user'){
+                image = d.avatar_url;
               }
               return image;
             })
@@ -64,9 +63,9 @@ angular.module('constellationsApp.directives', [])
 
           // TODO: Make link
           node.append('svg:text')
-            // .attr('dx', 12)
-            // .attr('dy', '.35em')
-            .text(function (d) { return d.name; });
+            .attr('dx', 20)
+            .text(function (d) { return d.name; })
+            .on('click', function (d) { window.open(d.html_url); });
 
           force.on('tick', function() {
             link.attr('x1', function(d) { return d.source.x; })
