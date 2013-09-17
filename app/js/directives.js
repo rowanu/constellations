@@ -3,10 +3,10 @@
 'use strict';
 
 angular.module('constellationsApp.directives', [])
-  .directive('nightSky', function () {
-    var margin = 20,
-      width = 960,
-      height = 500;
+  // TODO: Move D3 code to own service (factory).
+  .directive('nightSky', function ($window) {
+    var width = $window.innerWidth,
+      height = $window.innerHeight;
 
     return {
       restrict: 'E',
@@ -20,9 +20,12 @@ angular.module('constellationsApp.directives', [])
           .attr('height', height);
 
         var force = d3.layout.force()
-          .gravity(0.1)
-          .distance(60)
-          .charge(-100)
+          .gravity(0.05)
+          .distance(100)
+          .charge(-400)
+          // .charge(function (d, i) {
+          //   return (d.type === 'repo') ? -300 : -100;
+          // })
           .size([width, height]);
 
         scope.$watch('data', function (newValue, oldValue) {
@@ -34,29 +37,35 @@ angular.module('constellationsApp.directives', [])
             .links(newValue.links)
             .start();
 
-          var link = svg.selectAll(".link")
+          var link = svg.selectAll('.link')
             .data(newValue.links)
-            .enter().append("line")
-            .attr("class", "link");
+            .enter().append('line')
+            .attr('class', 'link');
 
           var node = svg.selectAll('.node')
             .data(newValue.nodes)
             .enter().append('g')
             .attr('class', 'node')
-            .attr('r', 4)
+            .attr('r', 5)
             .call(force.drag);
           
-          // TODO: Append image based on type.
-          node.append("image")
-            .attr("xlink:href", "https://github.com/favicon.ico")
-            .attr("x", -8)
-            .attr("y", -8)
-            .attr("width", 16)
-            .attr("height", 16);
+          node.append('image')
+            .attr('xlink:href', function (d, i) {
+              var image = 'https://github.com/favicon.ico'; 
+              if (d.type === 'repo') {
+                image = '/img/star.png';
+              }
+              return image;
+            })
+            .attr('x', -16)
+            .attr('y', -16)
+            .attr('width', 32)
+            .attr('height', 32);
 
-          node.append("svg:text")
-            // .attr("dx", 12)
-            // .attr("dy", ".35em")
+          // TODO: Make link
+          node.append('svg:text')
+            // .attr('dx', 12)
+            // .attr('dy', '.35em')
             .text(function (d) { return d.name; });
 
           force.on('tick', function() {
