@@ -6,7 +6,6 @@ var PER_PAGE = 100;
 var AVATAR_404 = '/img/404_octocat.png';
 
 // TODO: All these calls (check localStorage, hit API, etc) can be refactored.
-// TODO: Remove resolve([]) - this should be left up to the client.
 angular.module('constellationsApp.services', ['ngResource', 'ngStorage'])
   .factory('Constellation', ['GitHub', '$localStorage', '$q', '$http', function (GitHub, $localStorage, $q, $http) {
     return {
