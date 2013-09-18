@@ -45,3 +45,23 @@ body {
   background: black;
   color: coral;
 }
+
+.instructions {
+  text-align: center;
+  font-size: 16px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 600px;
+  z-index: 1;
+}
+
+.rounded-corners {
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -khtml-border-radius: 20px;
+  border-radius: 20px;
+}
+
+.message {
+  background: lightblue;
+}

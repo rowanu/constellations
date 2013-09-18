@@ -14,6 +14,21 @@
 
 <night-sky data="constellation"></night-sky>
 
+<div class="instructions" ng-hide="constellation">
+  <div class="message rounded-corners">
+    <h1>Welcome to Constellations</h1>
+    <p>
+    Enter your GitHub username (or anyone else's, for that matter) in to the box
+    above, and see what repos they should check out based on the people they
+    follow.
+    </p>
+    <p>
+    Keep in mind there is a limit on the number of API queries you can make to
+    GitHub (the status will be updated at the bottom of the screen).
+    </p>
+  </div>
+</div>
+
 <div class="limit" ng-hide="!limit" ng-class="{over: over}">
   Your have {{limit.rate.remaining}} of {{limit.rate.limit}} GitHub API queries
   left (resets at {{limit.rate.reset * 1000 | date:'medium'}})

@@ -75,6 +75,9 @@ angular.module('constellationsApp.controllers', [])
         // console.log(data);
         $scope.constellation = data;
       });
+    }, function (reason) {
+      // Reset the data.
+      $scope.constellation = [];
     });
   });
 }])
