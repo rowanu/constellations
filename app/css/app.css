@@ -23,5 +23,6 @@
 
 .node text {
   /* pointer-events: none; */
+  cursor: pointer;  
   font: 10px sans-serif;
 }
