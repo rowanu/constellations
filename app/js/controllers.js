@@ -11,16 +11,13 @@ angular.module('constellationsApp.controllers', [])
   var repos = {}, usernames = {};
   var repoDetails = {};
 
-  var updateLimit = function () {
+  window.setInterval(function () { $scope.$apply(function () {
     console.log('Checking GitHub API rate limit');
     Constellation.limitPromise.then(function (response) {
       $scope.limit = response.data;
       $scope.over = $scope.limit.rate.remaining < 1;
     });
-  };
-
-  updateLimit();
-  window.setInterval(function () { $scope.$apply(updateLimit()); }, 10000);
+  }); }, 10000);
 
   $scope.$on('username:submit', function (e, username) {
     $scope.user = Constellation.getUser(username);
