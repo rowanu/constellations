@@ -10,6 +10,9 @@ angular.module('constellationsApp.services', ['ngResource', 'ngStorage'])
   .factory('Constellation', ['GitHub', '$localStorage', '$q', '$http', function (GitHub, $localStorage, $q, $http) {
     return {
       following: [],
+      getLimit: function () {
+        return GitHub.limit();
+      },
       getFollowing: function (username) {
         var deferred = $q.defer();
         if ($localStorage.following && $localStorage.following.length > 0) {
@@ -99,8 +102,11 @@ angular.module('constellationsApp.services', ['ngResource', 'ngStorage'])
       }
     };
   }])
-  .factory('GitHub', function ($resource) {
+  .factory('GitHub', ['$resource', '$http', function ($resource, $http) {
     return {
+      limit: function () {
+        return $http.get('https://api.github.com/rate_limit');
+      },
       user: $resource('https://api.github.com/users/:username'),
       // TODO: Use PER_PAGE
       following: $resource('https://api.github.com/users/:username/following',
@@ -108,4 +114,4 @@ angular.module('constellationsApp.services', ['ngResource', 'ngStorage'])
       starred: $resource('https://api.github.com/users/:username/starred',
         {per_page: 50}, { 'get': { method: 'GET', cache: true, isArray: true } })
     };
-  });
+  }]);

@@ -13,3 +13,8 @@
 </div>
 
 <night-sky data="constellation"></night-sky>
+
+<div class="limit" ng-hide="!limit" ng-class="{over: over}">
+  Your have {{limit.rate.remaining}} of {{limit.rate.limit}} GitHub API queries
+  left (resets at {{limit.rate.reset * 1000 | date:'medium'}})
+</div>

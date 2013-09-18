@@ -1,4 +1,4 @@
-/*jslint indent: 2 */
+/*jslint indent: 2, browser: true */
 /*globals angular: false */
 'use strict';
 
@@ -10,6 +10,17 @@ angular.module('constellationsApp.controllers', [])
   var starreds = [], logins = [];
   var repos = {}, usernames = {};
   var repoDetails = {};
+
+  var updateLimit = function () {
+    console.log('updateLimit');
+    Constellation.getLimit().then(function (response) {
+      $scope.limit = response.data;
+      $scope.over = $scope.limit.rate.remaining < 1;
+    });
+  };
+
+  updateLimit();
+  window.setInterval(function () { $scope.$apply(updateLimit()); }, 10000);
 
   $scope.$on('username:submit', function (e, username) {
     $scope.user = Constellation.getUser(username);
