@@ -12,8 +12,8 @@ angular.module('constellationsApp.controllers', [])
   var repoDetails = {};
 
   var updateLimit = function () {
-    console.log('updateLimit');
-    Constellation.getLimit().then(function (response) {
+    console.log('Checking GitHub API rate limit');
+    Constellation.limitPromise.then(function (response) {
       $scope.limit = response.data;
       $scope.over = $scope.limit.rate.remaining < 1;
     });
