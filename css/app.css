@@ -1,0 +1,42 @@
+body {
+  font: 10px sans-serif;
+}
+
+.username {
+}
+
+.user img {
+  float: right;
+}
+
+.user .avatar_url {
+  height: 120px;
+  width: 120px;
+}
+
+.chart {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: -1;
+}
+
+.chart .link {
+  stroke: #ccc;
+}
+
+.node text {
+  /* pointer-events: none; */
+  cursor: pointer;  
+}
+
+.limit {
+  position: absolute;
+  bottom: 0px;
+  right: 5px;
+  z-index: -2;
+}
+
+.limit.over {
+  text-color: coral;
+}

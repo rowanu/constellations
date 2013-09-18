@@ -1,0 +1,20 @@
+<div class="user">
+  <a ng-href="{{user.html_url}}" target="_blank">
+    <img ng-src="{{user.avatar_url}}" class="avatar_url">
+  </a>
+</div>
+
+<div ng-controller="UsernameCtrl" class="username">
+  <form ng-submit="submit()">
+    <input ng-model="username" type="text" placeholder="GitHub username"
+    select-on-click>
+    <input type="submit" ng-disabled="!username.length" ng-hide="true">
+  </form>
+</div>
+
+<night-sky data="constellation"></night-sky>
+
+<div class="limit" ng-hide="!limit" ng-class="{over: over}">
+  Your have {{limit.rate.remaining}} of {{limit.rate.limit}} GitHub API queries
+  left (resets at {{limit.rate.reset * 1000 | date:'medium'}})
+</div>
