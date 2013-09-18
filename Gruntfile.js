@@ -42,11 +42,18 @@ module.exports = function (grunt) {
           livereload: true
         }
       }
+    },
+    'gh-pages': {
+      options: {
+        base: 'app'
+      },
+      src: ['**']
     }
   });
 
   grunt.loadNpmTasks("grunt-contrib-connect");
   grunt.loadNpmTasks("grunt-contrib-watch");
+  grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks("grunt-karma");
 
   grunt.registerTask("default", ["connect:livereload", "watch"]);

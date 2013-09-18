@@ -1,3 +1,4 @@
 logs/*
-app/lib
+app/lib/
 !.gitkeep
+.grunt/
