@@ -3,23 +3,18 @@
 'use strict';
 
 angular.module('constellationsApp.controllers', [])
-  .controller('MainCtrl', ['$scope', '$q', 'Constellation', '$http', function ($scope, $q, Constellation, $http) {
-    var data = {
-      nodes: [],
-      links: []
-    };
-    var all = $q.all;
-    var username = 'rowanu'; // TODO: Testing
-    var starreds = [], logins = [];
+.controller('MainCtrl', ['$scope', '$q', 'Constellation', '$http', function ($scope, $q, Constellation, $http) {
+  // TODO: Clean up var definitions.
+  var data = { nodes: [], links: [] };
+  var all = $q.all;
+  var starreds = [], logins = [];
+  var repos = {}, usernames = {};
+  var repoDetails = {};
 
-    var repos = {}, usernames = {};
-    var repoDetails = {};
-
-    // $scope.$on('username:submit', function (e, username) {
-    // });
-
+  $scope.$on('username:submit', function (e, username) {
     $scope.user = Constellation.getUser(username);
     $scope.following = Constellation.getFollowing(username);
+
     $scope.following.then(function (following) {
       angular.forEach(following, function(user) {
         console.log(username + ": Follows " + user.login + ": Getting starred");
@@ -66,16 +61,15 @@ angular.module('constellationsApp.controllers', [])
           }
         });
 
-        // Convert to nodes and links
-        // Add the users to nodes (if do not exist)
-        console.log(data);
+        // console.log(data);
         $scope.constellation = data;
       });
     });
-  }])
-  .controller('UsernameCtrl', ['$scope', function ($scope) {
-    $scope.submit = function () {
-      console.log($scope.username + ": Username updated");
-      $scope.$emit('username:submit', $scope.username);
-    };
-  }]);
+  });
+}])
+.controller('UsernameCtrl', ['$scope', function ($scope) {
+  $scope.submit = function () {
+    console.log($scope.username + ": Username updated");
+    $scope.$emit('username:submit', $scope.username);
+  };
+}]);
