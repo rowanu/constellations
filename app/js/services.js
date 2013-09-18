@@ -5,8 +5,7 @@
 var PER_PAGE = 100;
 var AVATAR_404 = '/img/404_octocat.png';
 
-// TODO: All these calls (check localStorage, hit API, etc) can be refactored.
-angular.module('constellationsApp.services', ['ngResource', 'ngStorage'])
+angular.module('constellationsApp.services', ['ngResource'])
   .factory('Constellation', ['GitHub', '$q', '$http', function (GitHub, $q, $http) {
     return {
       following: [],

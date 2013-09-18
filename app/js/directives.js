@@ -50,7 +50,7 @@ angular.module('constellationsApp.directives', [])
             .attr('xlink:href', function (d, i) {
               var image = 'https://github.com/favicon.ico'; 
               if (d.type === 'repo') {
-                image = '/img/star.png';
+                image = 'img/star.png';
               } else if (d.type === 'user'){
                 image = d.avatar_url;
               }
