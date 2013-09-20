@@ -3,6 +3,7 @@ body {
 }
 
 .username {
+  z-index: 1;
 }
 
 .user img {

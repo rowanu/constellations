@@ -8,6 +8,8 @@
   <form ng-submit="submit()">
     <input ng-model="username" type="text" placeholder="GitHub username"
     select-on-click>
+    <input id="include" ng-model="include" type="checkbox">
+    <label for="include">Include repos already starred by user</label>
     <input type="submit" ng-disabled="!username.length" ng-hide="true">
   </form>
 </div>

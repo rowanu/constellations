@@ -47,6 +47,7 @@ angular.module('constellationsApp.controllers', [])
         // Clean up starred repos.
         angular.forEach(repos, function (users, repoName) {
           // Only show repos with > 1 starred
+          // TODO: and are not starred by the user
           if (users.length > 1) {
             console.log(repoName + " has more than 1 star #" + users.length);
             // Add the repo to nodes
