@@ -21,11 +21,15 @@ angular.module('constellationsApp.controllers', [])
 
   $scope.$on('username:submit', function (e, username) {
     $scope.user = Constellation.getUser(username);
+    // Have to do this in the promis callback, because we're in a controller
+    Constellation.getStarred(username).then(function (starred) {
+      $scope.user.starredFullNames = starred.map(function (s) { return s.full_name; });
+    });
     $scope.following = Constellation.getFollowing(username);
 
     $scope.following.then(function (following) {
       angular.forEach(following, function(user) {
-        console.log(username + ": Follows " + user.login + ": Getting starred");
+        // console.log(username + ": Follows " + user.login + ": Getting starred");
         logins.push(user.login);
         usernames[user.login] = user;
         starreds.push(Constellation.getStarred(user.login));
@@ -45,11 +49,11 @@ angular.module('constellationsApp.controllers', [])
           });
         });
         // Clean up starred repos.
+        // console.log($scope.user.starredFullNames); // TODO: testing
         angular.forEach(repos, function (users, repoName) {
-          // Only show repos with > 1 starred
-          // TODO: and are not starred by the user
-          if (users.length > 1) {
-            console.log(repoName + " has more than 1 star #" + users.length);
+          // Only show repos with > 1 starred and not starred by user
+          if (users.length > 1 && $scope.user.starredFullNames.indexOf(repoName) === -1) {
+            // console.log(repoName + " has more than 1 star #" + users.length);
             // Add the repo to nodes
             data.nodes.push({name: repoName, type: 'repo', html_url: repoDetails[repoName].html_url});
             var repoIndex = data.nodes.length - 1;
@@ -75,13 +79,14 @@ angular.module('constellationsApp.controllers', [])
       });
     }, function (reason) {
       // Reset the data.
+      console.error(reason);
       $scope.constellation = [];
     });
   });
 }])
 .controller('UsernameCtrl', ['$scope', function ($scope) {
   $scope.submit = function () {
-    console.log($scope.username + ": Username updated");
+    // console.log($scope.username + ": Username updated");
     $scope.$emit('username:submit', $scope.username);
   };
 }]);
